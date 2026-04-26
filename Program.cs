@@ -305,7 +305,7 @@ namespace TicTacToe
 
                 playAgain = (char)Console.Read() == 'y';
                 Console.ReadLine();
-                Console.WriteLine("=+++++++++++++++++++++++++++++++++++++++++++++++++++++=");
+                Console.WriteLine(HR);
 
             } while (playAgain);
         }
