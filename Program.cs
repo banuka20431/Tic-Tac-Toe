@@ -106,6 +106,7 @@ namespace TicTacToe
         {
 
 
+
             Boolean horizontalMatch = false;
             Boolean verticalMatch = false;
             Boolean diagonalMatch = false;
@@ -113,19 +114,13 @@ namespace TicTacToe
             Boolean ASCENDING = true;
             Boolean DESCENDING = false;
 
-
+       
             for (int currentIdx = 0; currentIdx < board.Length; currentIdx++)
             {
 
                 if (board[currentIdx] != 'X' && board[currentIdx] != 'O') { continue; }
 
-                // Console.WriteLine($"\nCurrent Squre: {currentIdx + 1}");
-
                 Side side = GetClosestSide(currentIdx + 1);
-
-                //Console.WriteLine("\nSide: " + side);
-
-                //Console.WriteLine("-currentIdx : " + currentIdx);
 
 
                 if (side == Side.UP)
