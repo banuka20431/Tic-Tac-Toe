@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TicTacToe
+﻿namespace TicTacToe
 {
     class Program
     {
@@ -22,7 +20,7 @@ namespace TicTacToe
         static Boolean HorizontalCheck(char[] board, int originIndex, Boolean ascending)
         {
             int sign = ascending ? 1 : -1;
-            
+
             for (int k = 1; k < 3; k++)
             {
                 if (board[originIndex + k * sign] != board[originIndex])
@@ -102,7 +100,7 @@ namespace TicTacToe
         }
 
 
-        static GameStatus CheckState(char[] board)
+        static GameStatus CheckState(char[] board, int handID)
         {
 
 
@@ -114,7 +112,7 @@ namespace TicTacToe
             Boolean ASCENDING = true;
             Boolean DESCENDING = false;
 
-       
+
             for (int currentIdx = 0; currentIdx < board.Length; currentIdx++)
             {
 
@@ -172,7 +170,7 @@ namespace TicTacToe
                     if (currentIdx == (int)Boundary.LOWER_RIGHT || currentIdx == (int)Boundary.LOWER_LEFT)
                     {
                         horizontalMatch = HorizontalCheck(
-                            board, 
+                            board,
                             currentIdx,
                             currentIdx == (int)Boundary.LOWER_LEFT ? ASCENDING : DESCENDING
                         );
@@ -211,6 +209,8 @@ namespace TicTacToe
                     return GameStatus.WIN;
                 }
             }
+
+            if(handID == 9) { return GameStatus.DRAW; }
 
 
             return GameStatus.ONGOING;
@@ -289,9 +289,10 @@ namespace TicTacToe
 
                     PlayHand(players, board, currentPlayerSymbole);
 
-                    gameStatus = CheckState(board);
+                    gameStatus = CheckState(board, handID);
 
                     if (gameStatus == GameStatus.WIN) { Console.WriteLine($"\n{(handID % 2 == 0 ? players[1] : players[0])} Won!"); }
+                    if (gameStatus == GameStatus.DRAW) { Console.WriteLine("\nGame Drawn!"); }
 
                     handID++;
                 }
