@@ -22,10 +22,9 @@ namespace TicTacToe
         static Boolean HorizontalCheck(char[] board, int originIndex, Boolean ascending)
         {
             int sign = ascending ? 1 : -1;
-
+            
             for (int k = 1; k < 3; k++)
             {
-
                 if (board[originIndex + k * sign] != board[originIndex])
                 {
                     return false;
@@ -40,6 +39,7 @@ namespace TicTacToe
 
             for (int k = 1; k < 3; k++)
             {
+
                 if (board[originIndex + 3 * k * sign] != board[originIndex])
                 {
                     return false;
@@ -52,13 +52,12 @@ namespace TicTacToe
         static Boolean DiagonalCheck(char[] board, int originIndex, Boolean ascending)
         {
             int sign = ascending ? 1 : -1;
+            int increment = originIndex == 2 || originIndex == 6 ? 2 : 4;
+
 
             for (int k = 1; k < 3; k++)
             {
-
-                Console.WriteLine("OG IDX: " + originIndex);
-                Console.WriteLine("NEXT IDX: " + originIndex + 4 * k * sign);
-                if (board[originIndex + 4 * k * sign] != board[originIndex])
+                if (board[originIndex + increment * k * sign] != board[originIndex])
                 {
                     return false;
                 }
@@ -77,29 +76,23 @@ namespace TicTacToe
             int diffLowerRight = Math.Abs((int)(Boundary.LOWER_RIGHT - index));
             int diffLowerLeft = Math.Abs((int)(Boundary.LOWER_LEFT - index));
 
-            /*
-            Console.WriteLine($"\n\nDUR {diffUpperRight}");
-            Console.WriteLine($"DUL {diffUpperLeft}");
-            Console.WriteLine($"DLR {diffLowerRight}");
-            Console.WriteLine($"DLL {diffLowerLeft}\n");
-            */
 
             if (diffUpperRight <= 2 && diffUpperLeft <= 2)
             {
                 return Side.UP;
             }
 
-            if (diffUpperRight <=3 && diffLowerRight <= 3)
+            if (diffUpperRight <= 3 && diffLowerRight <= 3)
             {
                 return Side.RIGHT;
             }
 
-            if (diffLowerRight <= 2 && diffLowerRight <=2)
+            if (diffLowerRight <= 2 && diffLowerRight <= 2)
             {
                 return Side.DOWN;
             }
 
-            if (diffLowerLeft <=3 && diffUpperLeft <= 3)
+            if (diffLowerLeft <= 3 && diffUpperLeft <= 3)
             {
                 return Side.LEFT;
             }
@@ -125,12 +118,15 @@ namespace TicTacToe
             {
 
                 if (board[currentIdx] != 'X' && board[currentIdx] != 'O') { continue; }
-                
+
                 // Console.WriteLine($"\nCurrent Squre: {currentIdx + 1}");
 
                 Side side = GetClosestSide(currentIdx + 1);
 
-                // Console.WriteLine("\nSide: " + side);
+                //Console.WriteLine("\nSide: " + side);
+
+                //Console.WriteLine("-currentIdx : " + currentIdx);
+
 
                 if (side == Side.UP)
                 {
@@ -138,13 +134,13 @@ namespace TicTacToe
                     if (currentIdx == (int)Boundary.UPPER_LEFT || currentIdx == (int)Boundary.UPPER_RIGHT)
                     {
 
-                        horizontalMatch = HorizontalCheck(board, currentIdx, ASCENDING);
-                        diagonalMatch = DiagonalCheck(board, currentIdx, ASCENDING);
-                        verticalMatch = VerticalCheck(
+                        horizontalMatch = HorizontalCheck(
                             board,
                             currentIdx,
                             currentIdx == (int)Boundary.UPPER_LEFT ? ASCENDING : DESCENDING
-                        );
+                         );
+                        diagonalMatch = DiagonalCheck(board, currentIdx, ASCENDING);
+                        verticalMatch = VerticalCheck(board, currentIdx, ASCENDING);
 
                     }
                     else
@@ -180,21 +176,21 @@ namespace TicTacToe
 
                     if (currentIdx == (int)Boundary.LOWER_RIGHT || currentIdx == (int)Boundary.LOWER_LEFT)
                     {
-                        horizontalMatch = HorizontalCheck(board, currentIdx, DESCENDING);
-                        diagonalMatch = DiagonalCheck(board, currentIdx, DESCENDING);
-                        verticalMatch = VerticalCheck(
-                            board,
+                        horizontalMatch = HorizontalCheck(
+                            board, 
                             currentIdx,
-                            currentIdx == (int)Boundary.LOWER_RIGHT ? ASCENDING : DESCENDING
+                            currentIdx == (int)Boundary.LOWER_LEFT ? ASCENDING : DESCENDING
                         );
-
+                        diagonalMatch = DiagonalCheck(board, currentIdx, DESCENDING);
+                        verticalMatch = VerticalCheck(board, currentIdx, DESCENDING);
                     }
                     else
                     {
                         horizontalMatch = HorizontalCheck(board, currentIdx, DESCENDING);
                     }
 
-                } else if (side == Side.LEFT)
+                }
+                else if (side == Side.LEFT)
                 {
 
                     if (currentIdx == (int)Boundary.UPPER_LEFT || currentIdx == (int)Boundary.LOWER_LEFT)
@@ -215,15 +211,15 @@ namespace TicTacToe
 
                 }
 
+                if (verticalMatch || horizontalMatch || diagonalMatch)
+                {
+                    return GameStatus.WIN;
+                }
             }
 
-            if (verticalMatch || horizontalMatch || diagonalMatch)
-            {
-                return GameStatus.WIN;
-            } 
 
             return GameStatus.ONGOING;
-        } 
+        }
 
 
         static void PlayHand(string[] players, char[] board, char currentPlayerSymbole)
@@ -231,23 +227,26 @@ namespace TicTacToe
             string currentPlayer = currentPlayerSymbole == 'X' ? players[0] : players[1];
             Boolean invalidInput = true;
 
-            while (invalidInput) {
+            while (invalidInput)
+            {
                 Console.WriteLine($"\n\n{currentPlayer}, it's your move!");
                 Console.Write($"\n + Enter number 1 - 9 to select a squre: ");
-                if (!int.TryParse(Console.ReadLine(), out int index))
+                if (!int.TryParse(Console.ReadLine(), out int squreID))
                 {
                     Console.Write("Invalid Input!");
                 }
-                else if (index < 1 || index > 9)
+                else if (squreID < 1 || squreID > 9)
                 {
-                    Console.Write("Input Out of Bound! Enter a number between 1 through 9.");
+                    Console.Write("Input Out of Bound! Enter a number from 1 to 9.");
                 }
-                else if (board[index - 1] == 'X' || board[index - 1] == 'O') {
-                    Console.Write($"Squre {index} is already claimed!");
-
-                } else
+                else if (board[squreID - 1] == 'X' || board[squreID - 1] == 'O')
                 {
-                    board[index - 1] = currentPlayerSymbole;
+                    Console.Write($"Squre {squreID} is already claimed!");
+
+                }
+                else
+                {
+                    board[squreID - 1] = currentPlayerSymbole;
                     PrintBoard(board);
                     invalidInput = false;
                 }
@@ -265,33 +264,39 @@ namespace TicTacToe
             string[] players = { "Player 01", "Player 02" };
             char[] board = { '1', '2', '3', '4', '5', '6', '7', '8', '9' };
             Boolean playAgain = false;
-            GameStatus gameState;
+            GameStatus gameStatus;
             int handID;
 
-            Console.WriteLine("\n\nWelcome to Tic Tac Toe!\n");
+            string HR = "=+++++++++++++++++++++++++++++++++++++++++++++++++++++=";
+            string TITLE = "Welcome to Tic Tac Toe (idkwid edition)!";
+            int PAD = (HR.Length - TITLE.Length) / 2;
+
+            Console.WriteLine(HR);
+            Console.WriteLine(string.Format("{0," + (TITLE.Length + PAD) + "}", TITLE));
+            Console.WriteLine(HR);
 
             do
             {
 
-                gameState = GameStatus.ONGOING;
+                gameStatus = GameStatus.ONGOING;
                 handID = 1;
 
-                Console.WriteLine($"! {players[0]} is X and {players[1]} is O.");
+                Console.WriteLine($"\n! {players[0]} is X and {players[1]} is O.");
                 Console.WriteLine("\n - Board Cofiguration: \n");
                 PrintBoard(board);
-                
+
                 board = new char[board.Length];
                 ResetBoard(board);
 
-                while (gameState == GameStatus.ONGOING)
+                while (gameStatus == GameStatus.ONGOING)
                 {
                     char currentPlayerSymbole = handID % 2 == 0 ? 'O' : 'X';
 
                     PlayHand(players, board, currentPlayerSymbole);
-                    
-                    gameState = CheckState(board);
 
-                    if(gameState == GameStatus.WIN) { Console.WriteLine("\nYou Won!"); }
+                    gameStatus = CheckState(board);
+
+                    if (gameStatus == GameStatus.WIN) { Console.WriteLine($"\n{(handID % 2 == 0 ? players[1] : players[0])} Won!"); }
 
                     handID++;
                 }
@@ -299,11 +304,13 @@ namespace TicTacToe
                 Console.Write("\nPlay Again? (y/n): ");
 
                 playAgain = (char)Console.Read() == 'y';
+                Console.ReadLine();
+                Console.WriteLine("=+++++++++++++++++++++++++++++++++++++++++++++++++++++=");
 
             } while (playAgain);
         }
     }
-    
+
 }
 
 enum GameStatus
@@ -311,15 +318,15 @@ enum GameStatus
     WIN = 1,
     DRAW = 2,
     ONGOING = 3
-} 
+}
 
 enum Boundary
 {
-    UPPER_LEFT = 1,
-    UPPER_RIGHT = 3,
-    LOWER_LEFT = 7,
-    LOWER_RIGHT = 9,
-    CENTER = 5
+    UPPER_LEFT = 0,
+    UPPER_RIGHT = 2,
+    LOWER_LEFT = 6,
+    LOWER_RIGHT = 8,
+    CENTER = 4
 }
 
 enum Side
