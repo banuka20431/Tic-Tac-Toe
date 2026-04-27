@@ -69,10 +69,10 @@
         {
             if (index == (int)Boundary.CENTER) { return Side.NONE; }
 
-            int diffUpperRight = Math.Abs((int)(Boundary.UPPER_RIGHT - index));
-            int diffUpperLeft = Math.Abs((int)(Boundary.UPPER_LEFT - index));
-            int diffLowerRight = Math.Abs((int)(Boundary.LOWER_RIGHT - index));
-            int diffLowerLeft = Math.Abs((int)(Boundary.LOWER_LEFT - index));
+            int diffUpperRight = Math.Abs((int)(Boundary.UPPER_RIGHT + 1 - index));
+            int diffUpperLeft = Math.Abs((int)(Boundary.UPPER_LEFT + 1 - index));
+            int diffLowerRight = Math.Abs((int)(Boundary.LOWER_RIGHT + 1 - index));
+            int diffLowerLeft = Math.Abs((int)(Boundary.LOWER_LEFT + 1 - index));
 
 
             if (diffUpperRight <= 2 && diffUpperLeft <= 2)
@@ -142,6 +142,11 @@
                     }
 
 
+                    Console.WriteLine($"\n\nUP");
+                    Console.WriteLine($"Vertical Match: {verticalMatch}");
+                    Console.WriteLine($"Horizontal Match: {horizontalMatch}");
+                    Console.WriteLine($"Diagonal Match: {diagonalMatch}\n\n");
+
                 }
                 else if (side == Side.RIGHT)
                 {
@@ -163,6 +168,12 @@
                         horizontalMatch = HorizontalCheck(board, currentIdx, DESCENDING);
                     }
 
+
+                    Console.WriteLine($"\n\nRIGHT");
+                    Console.WriteLine($"Vertical Match: {verticalMatch}");
+                    Console.WriteLine($"Horizontal Match: {horizontalMatch}");
+                    Console.WriteLine($"Diagonal Match: {diagonalMatch}\n\n");
+
                 }
                 else if (side == Side.DOWN)
                 {
@@ -179,8 +190,14 @@
                     }
                     else
                     {
-                        horizontalMatch = HorizontalCheck(board, currentIdx, DESCENDING);
+                        verticalMatch = VerticalCheck(board, currentIdx, DESCENDING);
                     }
+
+
+                    Console.WriteLine($"\n\nDOWN");
+                    Console.WriteLine($"Vertical Match: {verticalMatch}");
+                    Console.WriteLine($"Horizontal Match: {horizontalMatch}");
+                    Console.WriteLine($"Diagonal Match: {diagonalMatch}\n\n");
 
                 }
                 else if (side == Side.LEFT)
@@ -201,6 +218,12 @@
                     {
                         horizontalMatch = HorizontalCheck(board, currentIdx, DESCENDING);
                     }
+
+
+                    Console.WriteLine($"\n\nLEFT");
+                    Console.WriteLine($"Vertical Match: {verticalMatch}");
+                    Console.WriteLine($"Horizontal Match: {horizontalMatch}");
+                    Console.WriteLine($"Diagonal Match: {diagonalMatch}\n\n");
 
                 }
 
@@ -257,7 +280,6 @@
         static void Main(string[] args)
         {
             string[] players = { "Player 01", "Player 02" };
-            char[] board = { '1', '2', '3', '4', '5', '6', '7', '8', '9' };
             Boolean playAgain = false;
             GameStatus gameStatus;
             int handID;
@@ -272,6 +294,7 @@
 
             do
             {
+                char[] board = { '1', '2', '3', '4', '5', '6', '7', '8', '9' };
 
                 gameStatus = GameStatus.ONGOING;
                 handID = 1;
