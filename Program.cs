@@ -85,7 +85,7 @@
                 return Side.RIGHT;
             }
 
-            if (diffLowerRight <= 2 && diffLowerRight <= 2)
+            if (diffLowerRight <= 2 && diffLowerLeft <= 2)
             {
                 return Side.DOWN;
             }
@@ -142,11 +142,6 @@
                     }
 
 
-                    Console.WriteLine($"\n\nUP");
-                    Console.WriteLine($"Vertical Match: {verticalMatch}");
-                    Console.WriteLine($"Horizontal Match: {horizontalMatch}");
-                    Console.WriteLine($"Diagonal Match: {diagonalMatch}\n\n");
-
                 }
                 else if (side == Side.RIGHT)
                 {
@@ -168,12 +163,6 @@
                         horizontalMatch = HorizontalCheck(board, currentIdx, DESCENDING);
                     }
 
-
-                    Console.WriteLine($"\n\nRIGHT");
-                    Console.WriteLine($"Vertical Match: {verticalMatch}");
-                    Console.WriteLine($"Horizontal Match: {horizontalMatch}");
-                    Console.WriteLine($"Diagonal Match: {diagonalMatch}\n\n");
-
                 }
                 else if (side == Side.DOWN)
                 {
@@ -192,12 +181,6 @@
                     {
                         verticalMatch = VerticalCheck(board, currentIdx, DESCENDING);
                     }
-
-
-                    Console.WriteLine($"\n\nDOWN");
-                    Console.WriteLine($"Vertical Match: {verticalMatch}");
-                    Console.WriteLine($"Horizontal Match: {horizontalMatch}");
-                    Console.WriteLine($"Diagonal Match: {diagonalMatch}\n\n");
 
                 }
                 else if (side == Side.LEFT)
@@ -218,12 +201,6 @@
                     {
                         horizontalMatch = HorizontalCheck(board, currentIdx, DESCENDING);
                     }
-
-
-                    Console.WriteLine($"\n\nLEFT");
-                    Console.WriteLine($"Vertical Match: {verticalMatch}");
-                    Console.WriteLine($"Horizontal Match: {horizontalMatch}");
-                    Console.WriteLine($"Diagonal Match: {diagonalMatch}\n\n");
 
                 }
 
@@ -285,7 +262,7 @@
             int handID;
 
             string HR = "=+++++++++++++++++++++++++++++++++++++++++++++++++++++=";
-            string TITLE = "Welcome to Tic Tac Toe (idkwid edition)!";
+            string TITLE = "Welcome to Tic Tac Toe (over-engineered edition)!";
             int PAD = (HR.Length - TITLE.Length) / 2;
 
             Console.WriteLine(HR);
